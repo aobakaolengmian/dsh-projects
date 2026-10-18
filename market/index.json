@@ -29,7 +29,7 @@
         "en": "Claude-Desktop-style projects sidebar for DSH Desktop: group conversations into projects, keep per-conversation working directories, drag or use menus to move conversations/workspaces between projects, and permanently clean empty conversations.",
         "zh": "为 DSH Desktop 提供类似 Claude Desktop 的项目侧栏：把会话归入项目、为每个会话选择工作目录、拖拽或通过菜单在项目间迁移会话/工作区，并彻底清理空会话。"
       },
-      "icon": "https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/39fc1c0b6e1ed783dfc19bc6c1978b33dd9837c9/icon.svg",
+      "icon": "https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/7aa44b622687faac67068275e3e2d5ba3e2bb002/icon.svg",
       "author": "aobakaolengmian",
       "homepage": "https://github.com/aobakaolengmian/dsh-projects",
       "repository": {
@@ -48,11 +48,9 @@
       "versions": [
         {
           "version": "1.0.0",
-          "publishTimestamp": 1792326410,
+          "publishTimestamp": 1792327155,
           "source": {
-            "type": "git",
-            "url": "https://github.com/aobakaolengmian/dsh-projects.git",
-            "commit": "39fc1c0b6e1ed783dfc19bc6c1978b33dd9837c9"
+            "type": "npm"
           }
         }
       ]
