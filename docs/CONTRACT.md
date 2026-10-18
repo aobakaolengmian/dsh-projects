@@ -11,7 +11,7 @@ profile is untouched.
 
 ## Architecture
 
-Two halves in one bundle package `@local/dsh-projects`:
+Two halves in one bundle package `@wxysskd/dsh-projects`:
 
 1. **Host half** (`index.js`, plain ESM, runs in the Desktop host process):
    - Durable project state in `$DSH_HOME/storages/dsh-projects.json`
@@ -58,7 +58,7 @@ Two halves in one bundle package `@local/dsh-projects`:
   shipped `ui-workspace` uses for its CSS module).
 - UI copy goes through the `t` prop (locale namespace `projects`).
 - Client module id in `__ModuleLoader__.load` must equal the package name
-  `@local/dsh-projects`.
+  `@wxysskd/dsh-projects`.
 
 ## Build & dev loop
 

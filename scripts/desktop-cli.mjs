@@ -9,7 +9,7 @@
  *
  * Usage:
  *   node scripts/desktop-cli.mjs plugin --profile desktop add link:/abs/path/to/dsh-projects
- *   node scripts/desktop-cli.mjs plugin --profile desktop remove @local/dsh-projects
+ *   node scripts/desktop-cli.mjs plugin --profile desktop remove @wxysskd/dsh-projects
  *   node scripts/desktop-cli.mjs --profile desktop --dump-config
  *
  * The process must be started with Electron's Node mode:

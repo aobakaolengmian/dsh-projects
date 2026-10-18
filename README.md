@@ -36,23 +36,29 @@ plugin replaces that sidebar region with a project-first browser:
 
 ## Install (desktop profile)
 
-The plugin ships as a normal DSH bundle. Two supported ways to install it into
-the **desktop** profile (`~/.dsh/profiles/desktop`):
+The plugin ships as a normal DSH bundle and is published on npm as
+**[`@wxysskd/dsh-projects`](https://www.npmjs.com/package/@wxysskd/dsh-projects)**.
+Three equivalent ways to install it into the **desktop** profile
+(`~/.dsh/profiles/desktop`):
 
 ```bash
-# 1. self-contained release tarball (share this file with another machine)
-npm run pack                                  # -> dist/local-dsh-projects-1.0.0.tgz
-plugin_manager install_bundle target=/abs/path/dist/local-dsh-projects-1.0.0.tgz
-#   or: desktop-cli plugin --profile desktop add "file:/abs/path/dist/local-dsh-projects-1.0.0.tgz"
+# 1. from npm (registry install; also works from Plugins -> Add plugin)
+plugin_manager install_bundle target=@wxysskd/dsh-projects@1.0.0
+#   or: desktop-cli plugin --profile desktop add @wxysskd/dsh-projects@1.0.0
 
-# 2. source link for development (client.js edits hot-reload)
+# 2. from the self-contained release tarball
+npm run pack                                  # -> dist/wxysskd-dsh-projects-1.0.0.tgz
+plugin_manager install_bundle target=/abs/path/dist/wxysskd-dsh-projects-1.0.0.tgz
+
+# 3. source link for development (client.js edits hot-reload)
 desktop-cli plugin --profile desktop add link:"$PWD"
 ```
 
-The tarball contains only runtime files (`index.js`, `client.js`,
-`cordis.patch.yml`, `locale/*.json`, `icon.svg`, `package.json`, `README.md`),
-plus `SHA-256`/manifest in `dist/`. See [docs/INSTALL.md](docs/INSTALL.md) for
-installation, update, activation/verification and rollback details.
+The npm package contains only runtime files (`index.js`, `client.js`,
+`cordis.patch.yml`, `locale/*.json`, `icon.svg`, `package.json`, `README.md`,
+`LICENSE`), plus `SHA-256`/manifest in `dist/`. See
+[docs/INSTALL.md](docs/INSTALL.md) for installation, the market index,
+activation/verification and rollback details.
 
 ## Plugin market (Discover tab)
 
@@ -70,11 +76,10 @@ tool and by any other DSH Desktop user:
 
 ![Projects in the Discover tab](docs/preview-market.png)
 
-The market entry installs a commit-pinned Git source
-(`git+https://github.com/aobakaolengmian/dsh-projects.git#<commit>`), so it can
-never drift from the reviewed code. See [market/README.md](market/README.md)
-for the format and how to regenerate it (`npm run market`). Installing from the
-market is equivalent to the tarball install and still needs one app restart for
+The market entry installs the published npm package
+(`@wxysskd/dsh-projects@<version>`), the same artifact as the tarball. See
+[market/README.md](market/README.md) for the format and how to regenerate it
+(`npm run market`). Installing from the market still needs one app restart for
 the Host row.
 
 ## Data

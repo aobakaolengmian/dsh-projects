@@ -20,7 +20,7 @@
   },
   "plugins": [
     {
-      "name": "@local/dsh-projects",
+      "name": "@wxysskd/dsh-projects",
       "title": {
         "en": "Projects",
         "zh": "项目"

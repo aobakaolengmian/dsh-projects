@@ -2,9 +2,9 @@
 /**
  * Generate the DSH plugin market index (format 1) for this bundle.
  *
- * The index pins the current commit so the Git install target is immutable:
- * commit the generated file after the commit it names is already pushed.
- * See docs/INSTALL.md and market/README.md.
+ * The entry installs the published npm package (name@version); the icon stays
+ * pinned to the current commit. Commit the generated file after the matching
+ * npm release is published. See docs/INSTALL.md and market/README.md.
  */
 import { execFileSync } from 'node:child_process'
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
@@ -50,7 +50,7 @@ const index = {
         {
           version: manifest.version,
           publishTimestamp,
-          source: { type: 'git', url: repoUrl, commit },
+          source: { type: 'npm' },
         },
       ],
     },

@@ -916,7 +916,7 @@ function handleHealth(request, response, store, ctx) {
   }
   sendJson(response, 200, {
     ok: true,
-    plugin: '@local/dsh-projects',
+    plugin: '@wxysskd/dsh-projects',
     version: STATE_VERSION,
     routes: ROUTE_TABLE.map((entry) => `${entry.method} ${entry.path}`),
     storage: {

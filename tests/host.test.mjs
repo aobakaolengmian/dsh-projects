@@ -1,5 +1,5 @@
 /**
- * Host-half tests for @local/dsh-projects.
+ * Host-half tests for @wxysskd/dsh-projects.
  *
  * These drive the real plugin entry (`apply`) against a fake Cordis context and
  * a fake `webServer` that records the registered exact routes, then invoke the
@@ -664,7 +664,7 @@ test('GET /dsh-projects/health reports storage, counts and host services', async
   assert.equal(response.status, 200)
   const body = response.body
   assert.equal(body.ok, true)
-  assert.equal(body.plugin, '@local/dsh-projects')
+  assert.equal(body.plugin, '@wxysskd/dsh-projects')
   assert.equal(body.version, 1)
   assert.deepEqual(body.routes, [
     'GET /dsh-projects/state',

@@ -16,9 +16,9 @@ https://aobakaolengmian.github.io/dsh-projects/market/index.json
 1. Open **Plugins** in DSH Desktop (the custom plugin markets bundle is already
    part of the Desktop profile).
 2. Open the **Discover** tab and add the index URL above as an index source.
-3. The **Projects** card appears; installing it uses the commit-pinned Git
-   install target recorded in the index, then restart the app once so the Host
-   row mounts.
+3. The **Projects** card appears; installing it runs the normal npm install of
+   `@wxysskd/dsh-projects` at the version recorded in the index, then restart
+   the app once so the Host row mounts.
 
 The same index works from the `plugin_market` agent tool and the CLI
 (`plugin_manager install_bundle target=<target from the index>`).
@@ -26,9 +26,9 @@ The same index works from the `plugin_market` agent tool and the CLI
 ## Format
 
 The document is validated by `@deepseek-ai/dsh-plugin-market-index`
-(format 1). Each version is a `git` source pinned to a full commit SHA, so the
-market entry can never drift from the reviewed code; installation resolves to
-`git+https://github.com/aobakaolengmian/dsh-projects.git#<commit>`.
+(format 1). Each version installs the npm package published from this
+repository (`@wxysskd/dsh-projects`), so the market entry resolves to
+`@wxysskd/dsh-projects@<version>`.
 
 ## Regenerate
 
@@ -38,6 +38,6 @@ market entry can never drift from the reviewed code; installation resolves to
 npm run market
 ```
 
-Commit the generated file **after** the commit it names is pushed (the pinned
-SHA must already exist on GitHub). For a new release, bump `version`, commit,
-push, then run `npm run market` and commit the index update.
+For a new release, bump `version`, run `npm publish --access public`, then
+`npm run market` and commit the index update. The icon URL stays pinned to the
+commit recorded when the index was generated.

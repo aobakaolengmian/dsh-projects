@@ -1,21 +1,34 @@
-# Installing the Projects bundle (`@local/dsh-projects`)
+# Installing the Projects bundle (`@wxysskd/dsh-projects`)
 
 The plugin is a normal DSH bundle: one Host row (`dsh-projects`) plus one browser
-module (`@local/dsh-projects`). It is installed into a **desktop profile** only
+module (`@wxysskd/dsh-projects`). It is installed into a **desktop profile** only
 (`~/.dsh/profiles/desktop`), never into `web` or `headless`.
 
 There are two ways to install it: the self-contained **release tarball** (use
 this to share the plugin with another machine) and a **source link** (use this
 while developing the plugin).
 
-## 1. Release tarball (recommended for installation / sharing)
+## 1. npm registry (recommended)
+
+The bundle is published as `@wxysskd/dsh-projects` on npm:
+
+```bash
+plugin_manager install_bundle target=@wxysskd/dsh-projects@1.0.0
+# or
+ELECTRON_RUN_AS_NODE=1 "$APP/Contents/MacOS/DeepSeek Harness" \
+  scripts/desktop-cli.mjs plugin --profile desktop add @wxysskd/dsh-projects@1.0.0
+```
+
+The same spec works from **Plugins → Add plugin** (`@wxysskd/dsh-projects`).
+
+## 2. Release tarball (offline / sharing)
 
 Build the artifact from a checkout (this also rebuilds `client.js` from source):
 
 ```bash
 cd /path/to/dsh-projects
 npm run pack
-# -> dist/local-dsh-projects-1.0.0.tgz
+# -> dist/wxysskd-dsh-projects-1.0.0.tgz
 #    dist/local-dsh-projects-1.0.0.tgz.sha256
 #    dist/MANIFEST.txt
 ```
@@ -47,7 +60,7 @@ app start.
 To update: bump `version` in `package.json`, run `npm run pack`, then run the
 same `add file:...` command again (or remove + add).
 
-## 2. Source link (development)
+## 3. Source link (development)
 
 Linking keeps the checkout authoritative, so `client.js` rebuilds hot-reload and
 source edits are visible without reinstalling:
@@ -76,10 +89,10 @@ https://aobakaolengmian.github.io/dsh-projects/market/index.json
 ```
 
 Add it in **Plugins → Discover** (or `plugin_market` reports it once configured)
-and install the **Projects** card. The market entry is a commit-pinned Git
-source (`git+https://github.com/aobakaolengmian/dsh-projects.git#<commit>`), so
-it installs the same code as the tarball; restart once afterwards for the Host
-row. Regenerate the index with `npm run market` after pushing a new commit.
+and install the **Projects** card. The market entry installs the npm package
+`@wxysskd/dsh-projects@<version>`, the same code as the tarball; restart once
+afterwards for the Host row. Regenerate the index with `npm run market` after
+publishing a new version.
 
 ## Activation model
 
@@ -105,7 +118,7 @@ row. Regenerate the index with `npm run market` after pushing a new commit.
 
 ```
 ELECTRON_RUN_AS_NODE=1 "$APP/Contents/MacOS/DeepSeek Harness" \
-  scripts/desktop-cli.mjs plugin --profile desktop remove @local/dsh-projects
+  scripts/desktop-cli.mjs plugin --profile desktop remove @wxysskd/dsh-projects
 ```
 
 Removing the bundle leaves `~/.dsh/storages/dsh-projects.json` untouched; delete
@@ -125,5 +138,5 @@ shared copy with:
 
 ```bash
 cd dist
-shasum -a 256 -c local-dsh-projects-1.0.0.tgz.sha256
+shasum -a 256 -c wxysskd-dsh-projects-1.0.0.tgz.sha256
 ```

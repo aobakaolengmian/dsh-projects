@@ -326,7 +326,7 @@ export function apply(ctx) {
   // CSS module (the web shell gives slots no style seam).
   ctx.effect(() => {
     const tag = document.createElement('style')
-    tag.dataset.plugin = '@local/dsh-projects'
+    tag.dataset.plugin = '@wxysskd/dsh-projects'
     tag.textContent = CSS
     document.head.appendChild(tag)
     return () => {

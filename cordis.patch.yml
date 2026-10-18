@@ -2,4 +2,4 @@
 # through package.json's dsh.client declaration (`./client`).
 - insert:
     - id: dsh-projects
-      name: '@local/dsh-projects'
+      name: '@wxysskd/dsh-projects'

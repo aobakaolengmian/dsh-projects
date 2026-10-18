@@ -3,7 +3,7 @@
  * Build the browser bundle and produce a distributable DSH bundle tarball in
  * `dist/`, together with a SHA-256 checksum and a manifest of its contents.
  *
- * The tarball is a plain npm package: `@local/dsh-projects@<version>`. Install
+ * The tarball is a plain npm package: `@wxysskd/dsh-projects@<version>`. Install
  * it with the DSH plugin manager (`install_bundle target=<tarball>`) or the
  * Desktop-carried CLI (`plugin --profile desktop add file:<tarball>`).
  */
@@ -35,7 +35,7 @@ const entries = execFileSync('tar', ['-tzf', tarball], { encoding: 'utf8' })
   .filter(Boolean)
   .sort()
 const lines = [
-  `@local/dsh-projects ${manifest.version}`,
+  `@wxysskd/dsh-projects ${manifest.version}`,
   `built: ${new Date().toISOString()}`,
   `tarball: ${tarball.split('/').pop()} (${bytes.length} bytes)`,
   `sha256: ${sha256}`,

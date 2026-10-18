@@ -51,8 +51,8 @@ async function main() {
   document.getElementById('sidebar').dataset.rail = wide ? '0' : '1'
 
   await loadScript('../client.js')
-  const factory = registry.get('@local/dsh-projects')
-  if (factory === undefined) throw new Error('client bundle did not register @local/dsh-projects')
+  const factory = registry.get('@wxysskd/dsh-projects')
+  if (factory === undefined) throw new Error('client bundle did not register @wxysskd/dsh-projects')
 
   const moduleTable = {
     react: React,
