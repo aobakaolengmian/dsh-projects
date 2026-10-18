@@ -1,0 +1,52 @@
+{
+  "name": "@local/dsh-projects",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Claude-Desktop-style Projects for DSH Desktop: group conversations into projects and pick a working directory per conversation.",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-renderer",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-session",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-api-session-controller",
+        "@deepseek-ai/dsh-api-workspace-controller"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "harness": "node harness/build.mjs",
+    "shoot": "node harness/shoot.mjs",
+    "pack": "node scripts/pack.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "playwright": "^1.49.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  },
+  "license": "UNLICENSED"
+}

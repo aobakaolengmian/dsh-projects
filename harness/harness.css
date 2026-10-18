@@ -1,0 +1,84 @@
+/* Harness shell: reproduces the shipped sidebar column box that normally
+   surrounds the `sidebar.workspaces` slot. Theme tokens come from refs/. */
+html,
+body {
+  margin: 0;
+  height: 100%;
+  font-family: var(--dsw-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+}
+
+#sidebar {
+  box-sizing: border-box;
+  width: 280px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--dsw-specific-sidebar-fill);
+  --dsh-sidebar-inline-padding: 12px;
+  padding: 6px 12px;
+}
+
+#sidebar[data-rail="1"] {
+  width: 56px;
+  padding: 18px 10px 6px;
+}
+
+/* Match the shipped sidebar shell: the workspaces slot is an inner regionArea
+   that cancels the right inline padding and reserves the scrollbar edge. */
+#app {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin-left: -4px;
+  margin-right: calc(-1 * var(--dsh-sidebar-inline-padding));
+  padding-left: 4px;
+  overflow: hidden;
+}
+
+#sidebar[data-rail="1"] #app {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 0;
+}
+
+#harness-error {
+  position: fixed;
+  inset: 8px;
+  z-index: 9999;
+  padding: 16px;
+  border-radius: 8px;
+  background: #fee2e2;
+  color: #7f1d1d;
+  font: 12px/1.5 ui-monospace, monospace;
+  white-space: pre-wrap;
+}
+
+[data-platform="darwin"] #sidebar {
+  background: transparent;
+}
+
+/* Runtime tokens the theme presenter writes onto the document; the extracted
+   refs/theme-*.css snapshots do not include them. Values copied from
+   @deepseek-ai/dsh-client-ui-theme. */
+body,
+body * {
+  --dsw-elevation-stroke: 0 0 0 0.5px var(--dsw-elevation-stroke-color);
+  --dsw-elevation-stroke-color: var(--dsw-alias-border-l4);
+  --dsw-elevation-prominent: var(--dsw-elevation-stroke), 0 3px 8px 0 #0000000a, 0 0 20px 0 #0000000d;
+  --dsw-shadow-lv3: 0 0 1px 0 #0003, 0 0 4px 0 #00000005, 0 12px 32px 0 #00000014;
+  --dsw-focus-ring-width: 2px;
+  --dsw-focus-ring-color: transparent;
+  --dsw-mask-blur: none;
+  --dsw-menu-backdrop-filter: blur(40px) saturate(150%);
+}
+
+body[data-ds-dark-theme] [data-menu-material] {
+  --dsw-elevation-stroke-color: var(--dsw-alias-border-l3);
+}

@@ -1,0 +1,7 @@
+node_modules/
+harness/dist/
+harness/shots/
+dist/
+*.log
+refs/
+.DS_Store

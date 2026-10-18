@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Projects">
+  <defs>
+    <linearGradient id="pj-bg" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5aa2ff"/>
+      <stop offset="1" stop-color="#3b6fe0"/>
+    </linearGradient>
+    <linearGradient id="pj-tab" x1="14" y1="10" x2="34" y2="24" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#dbeafe" stop-opacity=".85"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="15" fill="url(#pj-bg)"/>
+  <path d="M15 23.5c0-2.2 1.8-4 4-4h7.4c1.2 0 2.3.5 3.1 1.4l1.6 1.8c.4.4 1 .7 1.5.7H45c2.2 0 4 1.8 4 4v14c0 2.2-1.8 4-4 4H19c-2.2 0-4-1.8-4-4V23.5Z" fill="url(#pj-tab)"/>
+  <path d="M20 30.5h24M20 36h18M20 41.5h13" stroke="#3b6fe0" stroke-width="2.6" stroke-linecap="round" opacity=".55"/>
+  <circle cx="45.5" cy="44" r="7.5" fill="#ffffff"/>
+  <path d="M45.5 40v8M41.5 44h8" stroke="#3b6fe0" stroke-width="2.4" stroke-linecap="round"/>
+</svg>
