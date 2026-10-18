@@ -54,6 +54,22 @@ The tarball contains only runtime files (`index.js`, `client.js`,
 plus `SHA-256`/manifest in `dist/`. See [docs/INSTALL.md](docs/INSTALL.md) for
 installation, update, activation/verification and rollback details.
 
+## Plugin market (Discover tab)
+
+DSH has no official built-in market; the Discover tab reads index sources the
+user adds. This repository publishes a format-1 index with a commit-pinned Git
+install target:
+
+```
+https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/main/market/index.json
+```
+
+Add that URL in **Plugins → Discover → index sources** and install **Projects**
+from the card; the same index is readable by the `plugin_market` tool. See
+[market/README.md](market/README.md) for the format and how to regenerate it
+(`npm run market`). Installing from the market is equivalent to the tarball
+install and still needs one app restart for the Host row.
+
 ## Data
 
 Project metadata is Host-owned and durable, independent of session logs:

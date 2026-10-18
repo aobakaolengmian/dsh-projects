@@ -66,6 +66,21 @@ Rebuild the browser half after editing `src/`:
 npm run build     # writes client.js (also covered by `npm run pack`)
 ```
 
+## 3. Plugin market (Discover tab)
+
+DSH has no official market; the Discover tab reads index sources the user adds.
+This repository publishes a format-1 index:
+
+```
+https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/main/market/index.json
+```
+
+Add it in **Plugins → Discover** (or `plugin_market` reports it once configured)
+and install the **Projects** card. The market entry is a commit-pinned Git
+source (`git+https://github.com/aobakaolengmian/dsh-projects.git#<commit>`), so
+it installs the same code as the tarball; restart once afterwards for the Host
+row. Regenerate the index with `npm run market` after pushing a new commit.
+
 ## Activation model
 
 - **Host rows** are composed at app boot. A newly installed bundle, a removed

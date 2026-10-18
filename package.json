@@ -40,7 +40,8 @@
     "test": "node --test",
     "harness": "node harness/build.mjs",
     "shoot": "node harness/shoot.mjs",
-    "pack": "node scripts/pack.mjs"
+    "pack": "node scripts/pack.mjs",
+    "market": "node scripts/market-index.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.28.2",
