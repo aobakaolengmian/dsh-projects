@@ -17,6 +17,9 @@ const repoUrl = process.env.PLUGIN_REPO_URL ?? 'https://github.com/aobakaolengmi
 const repoHttp = repoUrl.replace(/\.git$/, '')
 const commit = process.env.PLUGIN_COMMIT ?? execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim()
 const publishTimestamp = Math.floor(Date.now() / 1000)
+// Default is the published npm package; MARKET_SOURCE=git keeps the entry
+// installable from the repository before the first npm release exists.
+const marketSource = process.env.MARKET_SOURCE === 'git' ? 'git' : 'npm'
 
 const index = {
   format: 1,
@@ -50,7 +53,10 @@ const index = {
         {
           version: manifest.version,
           publishTimestamp,
-          source: { type: 'npm' },
+          source:
+            marketSource === 'git'
+              ? { type: 'git', url: repoUrl, commit }
+              : { type: 'npm' },
         },
       ],
     },
