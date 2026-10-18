@@ -1,5 +1,7 @@
 # dsh-projects
 
+[![npm version](https://img.shields.io/npm/v/@wxysskd/dsh-projects.svg)](https://www.npmjs.com/package/@wxysskd/dsh-projects) [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Claude-Desktop-style **Projects** for **DSH Desktop** (the `desktop` DSH profile
 only — Web and headless profiles are untouched).
 
