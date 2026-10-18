@@ -72,7 +72,7 @@ DSH has no official market; the Discover tab reads index sources the user adds.
 This repository publishes a format-1 index:
 
 ```
-https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/main/market/index.json
+https://aobakaolengmian.github.io/dsh-projects/market/index.json
 ```
 
 Add it in **Plugins → Discover** (or `plugin_market` reports it once configured)

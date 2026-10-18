@@ -5,10 +5,10 @@ this repository. DSH has no built-in official market: the **Discover** tab of
 the Plugins page lists only index sources the user adds, so this file lets
 anyone install the Projects bundle from the market UI.
 
-Index URL:
+Index URL (served by GitHub Pages from this directory):
 
 ```
-https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/main/market/index.json
+https://aobakaolengmian.github.io/dsh-projects/market/index.json
 ```
 
 ## Use it
