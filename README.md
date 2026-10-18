@@ -64,11 +64,18 @@ install target:
 https://aobakaolengmian.github.io/dsh-projects/market/index.json
 ```
 
-Add that URL in **Plugins → Discover → index sources** and install **Projects**
-from the card; the same index is readable by the `plugin_market` tool. See
-[market/README.md](market/README.md) for the format and how to regenerate it
-(`npm run market`). Installing from the market is equivalent to the tarball
-install and still needs one app restart for the Host row.
+Add that URL as an index source in **Plugins → Discover** and install
+**Projects** from the card; the same index is readable by the `plugin_market`
+tool and by any other DSH Desktop user:
+
+![Projects in the Discover tab](docs/preview-market.png)
+
+The market entry installs a commit-pinned Git source
+(`git+https://github.com/aobakaolengmian/dsh-projects.git#<commit>`), so it can
+never drift from the reviewed code. See [market/README.md](market/README.md)
+for the format and how to regenerate it (`npm run market`). Installing from the
+market is equivalent to the tarball install and still needs one app restart for
+the Host row.
 
 ## Data
 
