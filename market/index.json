@@ -29,7 +29,7 @@
         "en": "Claude-Desktop-style projects sidebar for DSH Desktop: group conversations into projects, keep per-conversation working directories, drag or use menus to move conversations/workspaces between projects, and permanently clean empty conversations.",
         "zh": "为 DSH Desktop 提供类似 Claude Desktop 的项目侧栏：把会话归入项目、为每个会话选择工作目录、拖拽或通过菜单在项目间迁移会话/工作区，并彻底清理空会话。"
       },
-      "icon": "https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/7aa44b622687faac67068275e3e2d5ba3e2bb002/icon.svg",
+      "icon": "https://raw.githubusercontent.com/aobakaolengmian/dsh-projects/07caf8c355e818401ba4c7d0181f5b2adea03b5e/icon.svg",
       "author": "aobakaolengmian",
       "homepage": "https://github.com/aobakaolengmian/dsh-projects",
       "repository": {
@@ -48,7 +48,44 @@
       "versions": [
         {
           "version": "1.0.0",
-          "publishTimestamp": 1792327155,
+          "publishTimestamp": 1792549845,
+          "source": {
+            "type": "npm"
+          }
+        }
+      ]
+    },
+    {
+      "name": "@wxysskd/dsh-split-view",
+      "title": {
+        "en": "Split View",
+        "zh": "分屏视图"
+      },
+      "description": {
+        "en": "Split-screen Conversation View for DSH Desktop: arrange several live sessions side by side, stacked, in a 2x2 grid or a 3x3 grid. Drag sessions in from the sidebar, including the current one; each pane keeps its own transcript, composer, draft and attachment bar, and the resident header / right sidebar stay intact.",
+        "zh": "为 DSH Desktop 提供分屏会话视图：把多个实时会话左右并排、上下、田字格或九宫格排列。左侧会话可直接拖入窗格（包括当前会话），每个窗格有独立的记录、输入框、草稿和附件栏，顶部信息栏与右侧栏保持原样。"
+      },
+      "icon": "https://raw.githubusercontent.com/aobakaolengmian/dsh-split-view/28d77b2a8a9c09b0c4200b26134460314dd45a2f/icon.svg",
+      "author": "aobakaolengmian",
+      "homepage": "https://github.com/aobakaolengmian/dsh-split-view",
+      "repository": {
+        "url": "https://github.com/aobakaolengmian/dsh-split-view"
+      },
+      "metadata": {
+        "category": "productivity",
+        "keywords": [
+          "split-view",
+          "layout",
+          "panes",
+          "grid",
+          "conversation",
+          "workspace"
+        ]
+      },
+      "versions": [
+        {
+          "version": "1.3.1",
+          "publishTimestamp": 1792549845,
           "source": {
             "type": "npm"
           }
