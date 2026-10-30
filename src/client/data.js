@@ -88,6 +88,21 @@ function rowOf(sessions, sessionId) {
  * first project whose directories contain the session directory.
  * @returns {object | null}
  */
+/**
+ * True only for a real spawned subagent.
+ *
+ * DSH 0.2.1 marks every Session that has a parent as `origin: "subagent"`,
+ * including user forks/branches (fixed in 0.2.2). A fork keeps
+ * `delegationDepth === 0`, so requiring a positive depth keeps forks visible
+ * while still hiding truly spawned teammates.
+ * @param {object|undefined} row - session catalog row.
+ * @returns {boolean} whether the row is a spawned subagent.
+ */
+export function isSpawnedSubagent(row) {
+  if (row === undefined || row === null || row.origin !== 'subagent') return false
+  return (row.delegationDepth ?? 0) > 0
+}
+
 export function resolveSessionProject(session, projectData) {
   if (projectData === undefined || projectData === null) return null
   const projects = Array.isArray(projectData.projects) ? projectData.projects : []
@@ -154,7 +169,7 @@ export function buildSidebarModel({ sessions, workspaces, projectData, uiState, 
   for (const sessionId of sessionIds) {
     const row = rowOf(sessions, sessionId)
     if (row === undefined) continue
-    if (row.origin === 'subagent') continue
+    if (isSpawnedSubagent(row)) continue
     if (archived.has(sessionId) && !showArchived) continue
     // Empty/new Sessions are hidden unless they are the conversation currently
     // open in the main view (the Host keeps reusable blank Sessions around).

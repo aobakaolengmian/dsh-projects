@@ -109,7 +109,8 @@ test('model: pinned first, project sections, ungrouped by workspace, archived fi
     SESSION('b1', { cwd: '/work/b', updatedAt: 500 }),
     SESSION('blank-b', { cwd: '/work/b', blank: true, updatedAt: 100 }),
     SESSION('archived-a', { cwd: '/work/a', updatedAt: 900 }),
-    SESSION('sub', { cwd: '/work/a', origin: 'subagent', updatedAt: 999 }),
+    // 0.2.1 also marks user forks as `subagent`; only spawned teammates carry a depth.
+    SESSION('sub', { cwd: '/work/a', origin: 'subagent', delegationDepth: 1, updatedAt: 999 }),
     SESSION('other', { cwd: '/work/c', updatedAt: 50 }),
     SESSION('loose', { cwd: '/work/unknown', updatedAt: 40 }),
     SESSION('nodir', { updatedAt: 30 }),
@@ -177,6 +178,21 @@ test('model keeps empty projects visible and drops deleted-project assignments i
   assert.deepEqual(model.projects[1].sessions, ['s1'])
   assert.equal(model.projectBySession.has('s2'), false)
   assert.equal(model.ungrouped[0].sessions.includes('s2'), true)
+})
+
+test('a user fork marked subagent by 0.2.1 stays visible while a spawned teammate is hidden', () => {
+  const rows = [
+    SESSION('root', { cwd: '/work/a', updatedAt: 300 }),
+    SESSION('fork', { cwd: '/work/a', origin: 'subagent', delegationDepth: 0, updatedAt: 200 }),
+    SESSION('teammate', { cwd: '/work/a', origin: 'subagent', delegationDepth: 1, updatedAt: 100 }),
+    SESSION('legacy-fork', { cwd: '/work/a', origin: 'subagent', updatedAt: 50 }),
+  ]
+  const { sessions, workspaces } = snapshots(rows)
+  const model = buildSidebarModel({ sessions, workspaces, projectData: { projects: [], assignments: {}, sessionCwd: {} }, uiState: {} })
+  const visible = allVisibleSessionIds(model)
+  assert.ok(visible.includes('fork'), 'a fork keeps delegationDepth 0 and must stay visible')
+  assert.ok(visible.includes('legacy-fork'), 'missing delegationDepth must not hide a possible fork')
+  assert.ok(!visible.includes('teammate'), 'a spawned teammate must stay hidden')
 })
 
 test('Host-scanned legacy empty sessions are hidden unless current', () => {

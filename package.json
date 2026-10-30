@@ -40,7 +40,8 @@
     "harness": "node harness/build.mjs",
     "shoot": "node harness/shoot.mjs",
     "pack": "node scripts/pack.mjs",
-    "market": "node scripts/market-index.mjs"
+    "market": "node scripts/market-index.mjs",
+    "fix-rc5": "node scripts/fix-rc5-session-unavailable.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.28.2",

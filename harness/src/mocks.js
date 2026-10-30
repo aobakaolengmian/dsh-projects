@@ -74,7 +74,7 @@ export function createMocks({ scenario = 'default', lang = 'zh' } = {}) {
     { id: 's12', blank: true, cwd: '/Users/example/Badstuff/Software', updatedAt: hours(1) },
     { id: 's13', title: 'Pinned 旧项目', cwd: '/Users/example/Badstuff/Software', updatedAt: days(5) },
     { id: 's14', title: 'LLM 评测', cwd: '/Users/example/Badstuff/LLM', updatedAt: minutes(40), running: true },
-    { id: 's15', title: '子代理会话', cwd: '/Users/example/Badstuff/dsh-projects', updatedAt: minutes(15), origin: 'subagent' },
+    { id: 's15', title: '子代理会话', cwd: '/Users/example/Badstuff/dsh-projects', updatedAt: minutes(15), origin: 'subagent', delegationDepth: 1 },
     { id: 's16', title: '显式移出项目', cwd: '/Users/example/Badstuff/dsh-projects', updatedAt: hours(6) },
     { id: 's17', title: '这是一个非常非常长的会话标题用于测试省略号显示效果', cwd: '/Users/example/Badstuff/Software', updatedAt: days(4) },
     { id: 's18', blank: true, cwd: '/Users/example/Badstuff/Hoard', updatedAt: hours(3) },
@@ -157,6 +157,7 @@ export function createMocks({ scenario = 'default', lang = 'zh' } = {}) {
       updatedAt: row.updatedAt,
       retainedBy: row.id === 's1' ? { mainView: 1 } : {},
       ...(row.origin === undefined ? {} : { origin: row.origin }),
+      ...(row.delegationDepth === undefined ? {} : { delegationDepth: row.delegationDepth }),
     }
   }
   const sessions = makeStore({ ids: sessionRows.map((row) => row.id), byId, phase: 'ready', projectionsBySession: {} })

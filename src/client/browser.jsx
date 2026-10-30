@@ -14,18 +14,7 @@
  * kit is imported from `./ui.jsx`; CSS class names are the frozen `pj-` list.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import {
-  PROJECT_COLORS,
-  allVisibleSessionIds,
-  basename,
-  buildSidebarModel,
-  colorIdAt,
-  matchSession,
-  normalizePath,
-  resolveProjectColor,
-  samePath,
-  timeLabel,
-} from './data.js'
+import { PROJECT_COLORS, allVisibleSessionIds, basename, buildSidebarModel, colorIdAt, isSpawnedSubagent, matchSession, normalizePath, resolveProjectColor, samePath, timeLabel } from './data.js'
 import {
   Button,
   FolderGlyph,
@@ -232,14 +221,14 @@ export function Browser({
     for (const sessionId of Array.isArray(sessions.ids) ? sessions.ids : []) {
       const row = sessions.byId?.[sessionId]
       if (row?.blank !== true) continue
-      if (row.origin === 'subagent') continue
+      if (isSpawnedSubagent(row)) continue
       if (sessionId === currentSessionId) continue
       ids.add(sessionId)
     }
     for (const sessionId of emptySessionIds) {
       if (sessionId === currentSessionId) continue
       const row = sessions.byId?.[sessionId]
-      if (row === undefined || row.origin === 'subagent') continue
+      if (row === undefined || isSpawnedSubagent(row)) continue
       ids.add(sessionId)
     }
     return [...ids]

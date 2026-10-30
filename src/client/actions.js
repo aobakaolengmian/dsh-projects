@@ -3,11 +3,7 @@
  * shipped DSH client services, so the model-visible session state stays owned by
  * the Host. Failures reject with an Error carrying a user-displayable message.
  */
-import {
-  buildSidebarModel,
-  samePath,
-  resolveSessionProject,
-} from './data.js'
+import { buildSidebarModel, isSpawnedSubagent, resolveSessionProject, samePath } from './data.js'
 
 function errorText(error) {
   if (error instanceof Error) return error.message
@@ -169,7 +165,7 @@ export function createActions(ctx, projectState, uiState) {
       const ids = []
       for (const sessionId of Array.isArray(snapshot.ids) ? snapshot.ids : []) {
         const row = snapshot.byId?.[sessionId]
-        if (row === undefined || row.origin === 'subagent') continue
+        if (row === undefined || isSpawnedSubagent(row)) continue
         if (typeof row.cwd === 'string' && samePath(row.cwd, path)) ids.push(sessionId)
       }
       return ids

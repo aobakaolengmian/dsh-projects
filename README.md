@@ -160,6 +160,48 @@ from project** and **Delete workspace**. Deleting a workspace removes only its
 registration, puts its conversations back under *Other conversations*, and never
 deletes a conversation.
 
+## Desktop 0.2.1-rc.5: "Session unavailable" (not this plugin)
+
+Symptom: after the Desktop app auto-updated to **0.2.1-rc.5**, opening any
+historical session shows *Session unavailable* in the composer and the sidebar
+rows disappear; with this plugin **disabled** the same thing happens, so it is a
+regression in the shipped composition, not in this bundle.
+
+Cause (verified by running the 0.2.1-rc.5 runtime against a copy of a real
+`~/.dsh`): rc.5 mounts `@deepseek-ai/dsh-tool-subagent/model-selection-settings`
+as a *standing* row while its shipped presets still request
+`modelSelectionSettings: true` inside a preset scope. Every session whose
+recorded preset carries the flag fails to bind an agent with
+
+```
+agent-preset/invalid — tool-subagent (@deepseek-ai/dsh-tool-subagent):
+standing `modelSelectionSettings` requires a scoped preset Context
+```
+
+so the conversation view renders without a live input and shows
+"Session unavailable". DSH 0.2.2 removed the flag, which is why the CLI/web
+runtime on 0.2.2 opens the same sessions normally.
+
+Workaround for rc.5 (this repo): append the shipped presets minus that one flag
+to the profile patch, then restart the Desktop app:
+
+```bash
+# point --presets at the extracted app's dsh-web-app/presets directory
+node scripts/fix-rc5-session-unavailable.mjs \
+  --presets /path/to/asar/dsh/node_modules/@deepseek-ai/dsh-web-app/presets
+#   --check   report whether the block is present
+#   --remove  delete the block (do this after upgrading to 0.2.2+)
+```
+
+The block is bounded by `# ==== rc.5 session fix BEGIN/END ====` comments and is
+a plain profile-patch override, so it is reversible and disappears with the next
+app update once removed.
+
+This plugin itself is rc.5-compatible: with the workaround in place its sidebar
+renders and sessions open normally. 0.2.1 also labels user forks as
+`origin: "subagent"`; the plugin now hides only *spawned* teammates
+(`delegationDepth > 0`), so forks stay visible.
+
 ## Compatibility with other sidebar plugins
 
 The installed sidebar-touching plugins were audited and the browser keeps their

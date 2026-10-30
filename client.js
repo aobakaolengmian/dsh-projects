@@ -89,6 +89,10 @@ function rowOf(sessions, sessionId) {
   if (byId === void 0 || byId === null) return void 0;
   return byId[sessionId];
 }
+function isSpawnedSubagent(row) {
+  if (row === void 0 || row === null || row.origin !== "subagent") return false;
+  return (row.delegationDepth ?? 0) > 0;
+}
 function resolveSessionProject(session, projectData) {
   if (projectData === void 0 || projectData === null) return null;
   const projects = Array.isArray(projectData.projects) ? projectData.projects : [];
@@ -133,7 +137,7 @@ function buildSidebarModel({ sessions, workspaces, projectData, uiState, current
   for (const sessionId of sessionIds) {
     const row = rowOf(sessions, sessionId);
     if (row === void 0) continue;
-    if (row.origin === "subagent") continue;
+    if (isSpawnedSubagent(row)) continue;
     if (archived.has(sessionId) && !showArchived) continue;
     if (row.blank === true && sessionId !== currentSessionId) continue;
     if (hiddenEmpty !== null && hiddenEmpty.has(sessionId) && sessionId !== currentSessionId) continue;
@@ -1215,14 +1219,14 @@ function Browser({
     for (const sessionId of Array.isArray(sessions.ids) ? sessions.ids : []) {
       const row = sessions.byId?.[sessionId];
       if (row?.blank !== true) continue;
-      if (row.origin === "subagent") continue;
+      if (isSpawnedSubagent(row)) continue;
       if (sessionId === currentSessionId) continue;
       ids.add(sessionId);
     }
     for (const sessionId of emptySessionIds) {
       if (sessionId === currentSessionId) continue;
       const row = sessions.byId?.[sessionId];
-      if (row === void 0 || row.origin === "subagent") continue;
+      if (row === void 0 || isSpawnedSubagent(row)) continue;
       ids.add(sessionId);
     }
     return [...ids];
@@ -3339,7 +3343,7 @@ function createActions(ctx, projectState, uiState) {
       const ids = [];
       for (const sessionId of Array.isArray(snapshot.ids) ? snapshot.ids : []) {
         const row = snapshot.byId?.[sessionId];
-        if (row === void 0 || row.origin === "subagent") continue;
+        if (row === void 0 || isSpawnedSubagent(row)) continue;
         if (typeof row.cwd === "string" && samePath(row.cwd, path)) ids.push(sessionId);
       }
       return ids;
