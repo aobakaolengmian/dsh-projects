@@ -78,6 +78,7 @@ if (presetsDir === undefined || !existsSync(presetsDir)) {
   process.exit(1)
 }
 
+let sawFlag = false
 const blocks = []
 for (const name of PRESETS) {
   const file = join(presetsDir, `${name}.patch.yml`)
@@ -96,12 +97,20 @@ for (const name of PRESETS) {
     }
     if (!line.startsWith('    ')) break
     const dedented = line.slice(4)
-    if (/^\s+modelSelectionSettings:\s*true\s*$/.test(dedented)) continue
+    if (/^\s+modelSelectionSettings:\s*true\s*$/.test(dedented)) {
+      sawFlag = true
+      continue
+    }
     block.push(dedented)
   }
   while (block.length > 0 && block[block.length - 1] === '') block.pop()
   blocks.push(block.join('\n'))
   console.error(`- ${name}: ${block.length} lines`)
+}
+
+if (!sawFlag) {
+  console.error('these presets carry no modelSelectionSettings flag: this runtime already has the fix (0.2.2+); nothing written')
+  process.exit(1)
 }
 
 const header = [

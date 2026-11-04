@@ -160,47 +160,61 @@ from project** and **Delete workspace**. Deleting a workspace removes only its
 registration, puts its conversations back under *Other conversations*, and never
 deletes a conversation.
 
-## Desktop 0.2.1-rc.5: "Session unavailable" (not this plugin)
+## "Session unavailable" in the Desktop app (not this plugin)
 
-Symptom: after the Desktop app auto-updated to **0.2.1-rc.5**, opening any
-historical session shows *Session unavailable* in the composer and the sidebar
-rows disappear; with this plugin **disabled** the same thing happens, so it is a
-regression in the shipped composition, not in this bundle.
+Symptom: opening any historical session shows *Session unavailable* in the
+composer, session rows vanish from the sidebar and titles fall back to session
+ids. It reproduces with this plugin **disabled**, so it is a runtime/profile
+problem, not a bug in this bundle.
 
-Cause (verified by running the 0.2.1-rc.5 runtime against a copy of a real
-`~/.dsh`): rc.5 mounts `@deepseek-ai/dsh-tool-subagent/model-selection-settings`
-as a *standing* row while its shipped presets still request
-`modelSelectionSettings: true` inside a preset scope. Every session whose
-recorded preset carries the flag fails to bind an agent with
+Two different causes were diagnosed by booting the shipped runtime against a
+copy of a real `~/.dsh`:
 
-```
-agent-preset/invalid — tool-subagent (@deepseek-ai/dsh-tool-subagent):
-standing `modelSelectionSettings` requires a scoped preset Context
-```
+### 0.2.1-rc.5: standing subagent settings vs. preset scope
 
-so the conversation view renders without a live input and shows
-"Session unavailable". DSH 0.2.2 removed the flag, which is why the CLI/web
-runtime on 0.2.2 opens the same sessions normally.
-
-Workaround for rc.5 (this repo): append the shipped presets minus that one flag
-to the profile patch, then restart the Desktop app:
+rc.5 mounts `@deepseek-ai/dsh-tool-subagent/model-selection-settings` as a
+*standing* row while its presets request `modelSelectionSettings: true` inside a
+preset scope, so every session whose recorded preset carries the flag fails with
+`agent-preset/invalid` and renders without a live composer. Fixed upstream in
+0.2.2 (the flag is gone); apply `scripts/fix-rc5-session-unavailable.mjs` only on
+rc.5, and `--remove` it after upgrading:
 
 ```bash
-# point --presets at the extracted app's dsh-web-app/presets directory
-node scripts/fix-rc5-session-unavailable.mjs \
-  --presets /path/to/asar/dsh/node_modules/@deepseek-ai/dsh-web-app/presets
-#   --check   report whether the block is present
-#   --remove  delete the block (do this after upgrading to 0.2.2+)
+node scripts/fix-rc5-session-unavailable.mjs --presets <app>/dsh/node_modules/@deepseek-ai/dsh-web-app/presets
+node scripts/fix-rc5-session-unavailable.mjs --remove    # after upgrading
 ```
 
-The block is bounded by `# ==== rc.5 session fix BEGIN/END ====` comments and is
-a plain profile-patch override, so it is reversible and disappears with the next
-app update once removed.
+### 0.2.2-rc.1 and later: stale `@deepseek-ai/*` copies shadowing the app
 
-This plugin itself is rc.5-compatible: with the workaround in place its sidebar
-renders and sessions open normally. 0.2.1 also labels user forks as
-`origin: "subagent"`; the plugin now hides only *spawned* teammates
-(`delegationDepth > 0`), so forks stay visible.
+After an app update, packages left in `~/.dsh/profiles/<profile>/node_modules`
+by an older runtime win over the copies bundled in the app. A stale
+`@deepseek-ai/dsh-tool-subagent` (e.g. 0.2.1-rc.5 inside a 0.2.2 runtime) is
+reported as incompatible, its rows are disabled, the presets lose their
+delegation tools and session creation fails — the same "Session unavailable"
+symptom. Bundles pinned to the old version (`dsh-subagent-codex`,
+`dsh-subagent-claude-code`, …) are skipped for the same reason.
+
+Fix: remove the stale copies so the app's own matching versions are resolved,
+and drop (or update) profile bundles pinned to the old runtime:
+
+```bash
+cd ~/.dsh/profiles/<profile>
+mkdir -p .removed-stale-$(date +%Y%m%d)
+mv node_modules/@deepseek-ai/dsh-tool-subagent \
+   node_modules/@deepseek-ai/dsh-brand \
+   node_modules/@deepseek-ai/dsh-sdk-protocol \
+   .removed-stale-$(date +%Y%m%d)/ 2>/dev/null
+# then delete entries pinned to the old version from dsh.profile.bundles
+```
+
+Restart the app afterwards. Keeping those packages in `dependencies` is fine;
+reinstall them at the new runtime's version from **Plugins → Installed** to get
+their tools back.
+
+This plugin is compatible with both runtimes: with either fix in place its
+sidebar renders (including inside 0.2.2-rc.1) and sessions open and send
+normally. 0.2.1 also labels user forks as `origin: "subagent"`; the plugin hides
+only *spawned* teammates (`delegationDepth > 0`), so forks stay visible.
 
 ## Compatibility with other sidebar plugins
 
