@@ -184,18 +184,46 @@ node scripts/fix-rc5-session-unavailable.mjs --presets <app>/dsh/node_modules/@d
 node scripts/fix-rc5-session-unavailable.mjs --remove    # after upgrading
 ```
 
-### 0.2.2-rc.1 and later: stale `@deepseek-ai/*` copies shadowing the app
+### After upgrading to 0.2.2: a leftover rc.5 workaround breaks the new presets
 
-After an app update, packages left in `~/.dsh/profiles/<profile>/node_modules`
-by an older runtime win over the copies bundled in the app. A stale
-`@deepseek-ai/dsh-tool-subagent` (e.g. 0.2.1-rc.5 inside a 0.2.2 runtime) is
-reported as incompatible, its rows are disabled, the presets lose their
-delegation tools and session creation fails — the same "Session unavailable"
-symptom. Bundles pinned to the old version (`dsh-subagent-codex`,
-`dsh-subagent-claude-code`, …) are skipped for the same reason.
+0.2.2 genuinely fixed the upstream bug — its shipped presets no longer contain
+`modelSelectionSettings` (verified: 0 occurrences in `dsh-web-app/presets`).
+The regression right after the update came from the **rc.5 workaround still
+being applied**: the preset override block restated the *old* preset definitions,
+so it replaced 0.2.2's presets with rc.5 wiring. On 0.2.2 the stale
+`tool-subagent-control/list-agents` row never starts and session creation fails:
 
-Fix: remove the stale copies so the app's own matching versions are resolved,
-and drop (or update) profile bundles pinned to the old runtime:
+```
+agent-preset/invalid — tool-subagent-list-agents
+(@deepseek-ai/dsh-tool-subagent-control/list-agents): never started
+```
+
+which the conversation view renders as "Session unavailable" again. Measured by
+booting 0.2.2-rc.1 against a profile copy: stale block + old packages → create
+fails with the error above; stale packages alone → create succeeds.
+
+Therefore the workaround must be removed when the runtime no longer needs it:
+
+```bash
+node scripts/fix-rc5-session-unavailable.mjs --remove   # idempotent
+```
+
+The script also refuses to apply when the shipped presets carry no
+`modelSelectionSettings` flag, so it cannot be re-applied on 0.2.2+.
+
+### Old `@deepseek-ai/*` copies left in the profile after an update
+
+Independently, packages older than the app that sit in
+`~/.dsh/profiles/<profile>/node_modules` shadow the copies bundled in the app.
+A stale `@deepseek-ai/dsh-tool-subagent` (0.2.1-rc.5 inside a 0.2.2 runtime) is
+declared incompatible, so `tool-subagent`, `tool-subagent-fork` and
+`subagent-model-selection-settings` get disabled and the delegation tools go
+missing; bundles pinned to the old version (`dsh-subagent-codex`,
+`dsh-subagent-claude-code`, …) are skipped. Session creation still works, but
+subagent features silently disappear.
+
+Fix: move the stale copies out of the profile so the app's matching versions are
+resolved, then restart:
 
 ```bash
 cd ~/.dsh/profiles/<profile>
@@ -204,12 +232,9 @@ mv node_modules/@deepseek-ai/dsh-tool-subagent \
    node_modules/@deepseek-ai/dsh-brand \
    node_modules/@deepseek-ai/dsh-sdk-protocol \
    .removed-stale-$(date +%Y%m%d)/ 2>/dev/null
-# then delete entries pinned to the old version from dsh.profile.bundles
+# bundles pinned to the old runtime: update them in Plugins -> Installed,
+# or drop them from dsh.profile.bundles
 ```
-
-Restart the app afterwards. Keeping those packages in `dependencies` is fine;
-reinstall them at the new runtime's version from **Plugins → Installed** to get
-their tools back.
 
 This plugin is compatible with both runtimes: with either fix in place its
 sidebar renders (including inside 0.2.2-rc.1) and sessions open and send
