@@ -5,3 +5,4 @@ dist/
 *.log
 refs/
 .DS_Store
+harness/tmp-*
